@@ -8,11 +8,20 @@ module.exports = function (app) {
 
   app.route('/api/check')
     .post((req, res) => {
+      
 
     });
     
   app.route('/api/solve')
     .post((req, res) => {
+      const puzzle=req.body.puzzle
+      
 
+      const validation=solver.validate(puzzle)
+      if(validation){
+        return res.json(validation)
+      }
+
+      res.json({solution:"---------------------------SOLVED---SUDOKU---------------------------------------"})
     });
 };
