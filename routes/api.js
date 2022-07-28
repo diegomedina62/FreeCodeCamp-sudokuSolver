@@ -16,12 +16,12 @@ module.exports = function (app) {
     .post((req, res) => {
       const puzzle=req.body.puzzle
       
-
       const validation=solver.validate(puzzle)
+      
       if(validation){
         return res.json(validation)
       }
-
       res.json({solution:"---------------------------SOLVED---SUDOKU---------------------------------------"})
+    
     });
 };

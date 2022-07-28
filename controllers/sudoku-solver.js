@@ -1,4 +1,5 @@
 class SudokuSolver {
+  
 
   validate(puzzleString) {
     if(!puzzleString){
