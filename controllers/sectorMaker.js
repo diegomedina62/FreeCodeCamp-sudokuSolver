@@ -1,5 +1,5 @@
 const p1 =
-  "..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..";
+  "9.9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6.6";
 
 const indexFinder = (coor) => {
   const row = coor.match(/[abcdefghi]/gi)[0].toUpperCase();
@@ -7,7 +7,7 @@ const indexFinder = (coor) => {
   return col - 1 + add[row];
 };
 
-const creator = (puzzle) => {
+function mapCreator(puzzle) {
   const indexRow = {
     A: new Set([0, 1, 2, 3, 4, 5, 6, 7, 8]),
     B: new Set([9, 10, 11, 12, 13, 14, 15, 16, 17]),
@@ -56,37 +56,37 @@ const creator = (puzzle) => {
     sudoku.set(i, sudokuReader(i, puzzle));
   }
   return sudoku;
-};
-
-const i1 = creator(p1);
+}
 
 const possible = (index, map) => {
   const rowArr = [];
   const colArr = [];
   const regArr = [];
+  let obj = { number: map.get(index).number };
 
-  //se está evaluando todos, incluso los resueltos, cosa que no se deberia hacer
-  for (const v of map.values()) {
-    if (v.row == map.get(index).row && v.number != ".") {
-      rowArr.push(v.number);
-    }
-    if (v.col == map.get(index).col && v.number != ".") {
-      colArr.push(v.number);
-    }
-    if (v.reg == map.get(index).reg && v.number != ".") {
-      regArr.push(v.number);
+  for (const v of map.entries()) {
+    if (v[0] != index) {
+      if (v[1].row == map.get(index).row && v[1].number != ".") {
+        rowArr.push(v[1].number);
+      }
+      if (v[1].col == map.get(index).col && v[1].number != ".") {
+        colArr.push(v[1].number);
+      }
+      if (v[1].reg == map.get(index).reg && v[1].number != ".") {
+        regArr.push(v[1].number);
+      }
     }
   }
 
-  let obj = {
-    row: new Set(rowArr),
-    column: new Set(colArr),
-    region: new Set(regArr),
-  };
+  obj.row = new Set(rowArr);
+  obj.column = new Set(colArr);
+  obj.region = new Set(regArr);
+
   let possible = [];
 
   for (let i = 1; i < 10; i++) {
     if (
+      obj.number != i &&
       !obj.row.has(i.toString()) &&
       !obj.column.has(i.toString()) &&
       !obj.region.has(i.toString())
@@ -98,4 +98,4 @@ const possible = (index, map) => {
   return obj;
 };
 
-console.log(possible(2, i1));
+module.exports = { mapCreator, possible };
