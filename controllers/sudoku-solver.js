@@ -10,17 +10,6 @@ class SudokuSolver {
     if (!(puzzleString.length == 81)) {
       return { error: "Expected puzzle to be 81 characters long" };
     }
-
-    // for (let i = 0; i < 81; i++) {
-    //   let obj = possible(i, map);
-    //   if (
-    //     obj.row.has(obj.number) ||
-    //     obj.column.has(obj.number) ||
-    //     obj.region.has(obj.number)
-    //   ) {
-    //     return { error: "Puzzle cannot be solved" };
-    //   }
-    // }
   }
   checkPlacement(objAnalysis, value) {
     const obj = {};
