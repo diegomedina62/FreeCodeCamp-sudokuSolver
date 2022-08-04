@@ -41,20 +41,17 @@ const regionMap = new Map([
 const locator = (coor) => {
   const add = { A: 0, B: 9, C: 18, D: 27, E: 36, F: 45, G: 54, H: 63, I: 72 };
 
-  if (!coor.match(/[abcdefghi]/i) || !coor.match(/[1-9]/) || coor.length != 2) {
-    return { error: "invalid coordinate" };
-  }
   const row = coor.match(/[abcdefghi]/gi)[0].toUpperCase();
-  const col = coor.match(/[1-9]+/)[0];
+  const col = coor.match(/[1-9]/)[0];
   let index = col - 1 + add[row];
-  let reg = "";
+  let region = "";
   for (const v of regionMap.entries()) {
     if (v[1].has(index)) {
-      reg = v[0];
+      region = v[0];
     }
   }
 
-  return { row: row, column: col, region: reg, index: index };
+  return { row: row, column: col, region: region, index: index };
 };
 
 const checker = (location, puzzle) => {
@@ -63,17 +60,17 @@ const checker = (location, puzzle) => {
   const regArr = [];
   let obj = { number: puzzle[location.index] };
 
-  for (v of rowMap.get(location.row)) {
+  for (const v of rowMap.get(location.row)) {
     if (location.index != v && puzzle[v] != ".") {
       rowArr.push(puzzle[v]);
     }
   }
-  for (v of colMap.get(location.column)) {
+  for (const v of colMap.get(location.column)) {
     if (location.index != v && puzzle[v] != ".") {
       colArr.push(puzzle[v]);
     }
   }
-  for (v of regionMap.get(location.region)) {
+  for (const v of regionMap.get(location.region)) {
     if (location.index != v && puzzle[v] != ".") {
       regArr.push(puzzle[v]);
     }
@@ -97,3 +94,5 @@ const checker = (location, puzzle) => {
 
   return obj;
 };
+console.log(checker(locator("a1"), p1));
+module.exports = { rowMap, colMap, regionMap, locator, checker };
