@@ -1,12 +1,6 @@
 const p1 =
   "9.9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6.6";
 
-const indexFinder = (coor) => {
-  const row = coor.match(/[abcdefghi]/gi)[0].toUpperCase();
-  const col = coor.match(/[1-9]/g)[0];
-  return col - 1 + add[row];
-};
-
 function mapCreator(puzzle) {
   const indexRow = {
     A: new Set([0, 1, 2, 3, 4, 5, 6, 7, 8]),
@@ -20,15 +14,15 @@ function mapCreator(puzzle) {
     I: new Set([72, 73, 74, 75, 76, 77, 78, 79, 80]),
   };
   const indexCol = {
-    c1: new Set([0, 9, 18, 27, 36, 45, 54, 63, 72]),
-    c2: new Set([1, 10, 19, 28, 37, 46, 55, 64, 73]),
-    c3: new Set([2, 11, 20, 29, 38, 47, 56, 65, 74]),
-    c4: new Set([3, 12, 21, 30, 39, 48, 57, 66, 75]),
-    c5: new Set([4, 13, 22, 31, 40, 49, 58, 67, 76]),
-    c6: new Set([5, 14, 23, 32, 41, 50, 59, 68, 77]),
-    c7: new Set([6, 15, 24, 33, 42, 51, 60, 69, 78]),
-    c8: new Set([7, 16, 25, 34, 43, 52, 61, 70, 79]),
-    c9: new Set([8, 17, 26, 35, 44, 53, 62, 71, 80]),
+    1: new Set([0, 9, 18, 27, 36, 45, 54, 63, 72]),
+    2: new Set([1, 10, 19, 28, 37, 46, 55, 64, 73]),
+    3: new Set([2, 11, 20, 29, 38, 47, 56, 65, 74]),
+    4: new Set([3, 12, 21, 30, 39, 48, 57, 66, 75]),
+    5: new Set([4, 13, 22, 31, 40, 49, 58, 67, 76]),
+    6: new Set([5, 14, 23, 32, 41, 50, 59, 68, 77]),
+    7: new Set([6, 15, 24, 33, 42, 51, 60, 69, 78]),
+    8: new Set([7, 16, 25, 34, 43, 52, 61, 70, 79]),
+    9: new Set([8, 17, 26, 35, 44, 53, 62, 71, 80]),
   };
   const indexReg = {
     r1: new Set([0, 1, 2, 9, 10, 11, 18, 19, 20]),
@@ -42,21 +36,22 @@ function mapCreator(puzzle) {
     r9: new Set([60, 61, 62, 69, 70, 71, 78, 79, 80]),
   };
 
-  const sudokuReader = (index, puzzle) => {
+  const sudokuReader = (index) => {
     const obj = {};
     obj.row = Object.entries(indexRow).filter((x) => x[1].has(index))[0][0];
-    obj.col = Object.entries(indexCol).filter((x) => x[1].has(index))[0][0];
-    obj.reg = Object.entries(indexReg).filter((x) => x[1].has(index))[0][0];
-    obj.number = puzzle[index];
+    obj.column = Object.entries(indexCol).filter((x) => x[1].has(index))[0][0];
+    obj.region = Object.entries(indexReg).filter((x) => x[1].has(index))[0][0];
+    obj.index = index;
     return obj;
   };
 
   const sudoku = new Map();
   for (let i = 0; i < 81; i++) {
-    sudoku.set(i, sudokuReader(i, puzzle));
+    sudoku.set(i, sudokuReader(i));
   }
   return sudoku;
 }
+const sudokuMap = mapCreator();
 
 const possible = (index, map) => {
   const rowArr = [];
@@ -98,4 +93,4 @@ const possible = (index, map) => {
   return obj;
 };
 
-module.exports = { mapCreator, possible };
+module.exports = sudokuMap;

@@ -8,6 +8,7 @@ const {
   locator,
   checker,
 } = require("../controllers/puzzleChecker");
+const sudokuMap = require("../controllers/sectorMaker");
 module.exports = function (app) {
   let solver = new SudokuSolver();
 
@@ -17,12 +18,12 @@ module.exports = function (app) {
     if (!coordinate || !puzzle || !value) {
       return res.json({ error: "Required field(s) missing" });
     }
-    // check puzzle
+    // check puzzle entry
     const validation = solver.validate(puzzle);
     if (validation) {
       return res.json(validation);
     }
-    // check coordinate
+    // check coordinate entry
     if (
       !coordinate.match(/^[abcdefghi]/i) ||
       !coordinate.match(/[1-9]/) ||
@@ -30,12 +31,11 @@ module.exports = function (app) {
     ) {
       return res.json({ error: "Invalid coordinate" });
     }
-    // check value
-
+    // check value entry
     if (value.length > 1 || !/[123456789]/.test(value)) {
       return res.json({ error: "Invalid value" });
     }
-
+    //check if value is an available number for that location and find conflict places
     const coorObject = locator(coordinate);
     const objAnalysis = checker(coorObject, puzzle);
     const checkResponse = solver.checkPlacement(objAnalysis, value);
@@ -44,15 +44,17 @@ module.exports = function (app) {
 
   app.route("/api/solve").post((req, res) => {
     const puzzle = req.body.puzzle;
-    const validation = solver.validate(puzzle);
 
+    // check puzzle entry
+    const validation = solver.validate(puzzle);
     if (validation) {
       return res.json(validation);
     }
 
-    res.json({
-      solution:
-        "---------------------------SOLVED---SUDOKU---------------------------------------",
-    });
+    //solve sudoku here
+
+    const solution = solver.solve(puzzle, sudokuMap);
+    //temporal solution
+    res.json(solution);
   });
 };

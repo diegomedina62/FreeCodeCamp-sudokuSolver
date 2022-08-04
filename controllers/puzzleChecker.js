@@ -1,5 +1,5 @@
 const p1 =
-  "..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..";
+  "9.9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..";
 const entry = "A1";
 
 const rowMap = new Map([
@@ -94,5 +94,5 @@ const checker = (location, puzzle) => {
 
   return obj;
 };
-console.log(checker(locator("a1"), p1));
+
 module.exports = { rowMap, colMap, regionMap, locator, checker };
